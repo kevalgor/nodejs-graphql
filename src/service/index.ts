@@ -1,6 +1,6 @@
-import { authService } from "./auth.service";
-import { userService } from "./user.service";
-import { productService } from "./product.service";
-import { cartItemService } from "./cartItem.service";
-
-export { authService, userService, productService, cartItemService };
+export { authService } from "./auth.service";
+export { userService } from "./user.service";
+export { productService } from "./product.service";
+export { cartService } from "./cart.service";
+export { wishlistService } from "./wishlist.service";
+export { orderService } from "./order.service";

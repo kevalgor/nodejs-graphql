@@ -1,4 +1,6 @@
-export const httpErrorConstants = {
+import { IHttpErrorConstants } from "../interface";
+
+export const httpErrorConstants: IHttpErrorConstants = {
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,

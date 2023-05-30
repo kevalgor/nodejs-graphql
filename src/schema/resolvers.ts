@@ -1,20 +1,46 @@
+import { CommonService } from "../types/resolvers.types";
 import {
   authService,
   userService,
   productService,
-  cartItemService,
+  cartService,
+  wishlistService,
+  orderService,
 } from "../service";
+import {
+  UserDocument,
+  ProductDocument,
+  CartDocument,
+  WishlistDocument,
+  OrderDocument,
+} from "../interface";
 
-const resolvers = {
+const resolvers: CommonService<
+  any,
+  | UserDocument
+  | ProductDocument
+  | ProductDocument[]
+  | CartDocument
+  | CartDocument[]
+  | WishlistDocument
+  | WishlistDocument[]
+  | OrderDocument
+  | OrderDocument[]
+  | boolean
+> = {
   Query: {
     ...userService.Query,
     ...productService.Query,
-    ...cartItemService.Query,
+    ...cartService.Query,
+    ...wishlistService.Query,
+    ...orderService.Query,
   },
   Mutation: {
     ...authService.Mutation,
     ...userService.Mutation,
-    ...cartItemService.Mutation,
+    ...cartService.Mutation,
+    ...wishlistService.Mutation,
+    ...orderService.Mutation,
   },
 };
 

@@ -1,13 +1,11 @@
-interface LoginInput {
+export interface ILoginInput {
   email: string;
   password: string;
 }
 
-interface RegisterInput {
+export interface IRegisterInput {
   name: string;
   email: string;
   mobile: string;
   password: string;
 }
-
-export { LoginInput, RegisterInput };

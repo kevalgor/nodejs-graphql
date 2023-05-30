@@ -1,24 +1,32 @@
 import { model, Schema } from "mongoose";
+import { ProductDocument } from "../../interface/model.interface";
 
-const productSchema = new Schema(
+const schemaTypes = Schema.Types;
+
+const productSchema = new Schema<ProductDocument>(
   {
     title: {
-      type: String,
+      type: schemaTypes.String,
+      required: true,
     },
     description: {
-      type: String,
+      type: schemaTypes.String,
+      required: true,
     },
     image: {
-      type: String,
+      type: schemaTypes.String,
+      required: true,
     },
     price: {
-      type: Number,
+      type: schemaTypes.Number,
+      required: true,
     },
     category: {
-      type: String,
+      type: schemaTypes.String,
+      required: true,
     },
     active: {
-      type: Boolean,
+      type: schemaTypes.Boolean,
       default: true,
       index: true,
     },
@@ -28,4 +36,8 @@ const productSchema = new Schema(
 
 productSchema.index({ "$**": "text" });
 
-export const ProductModel = model("product", productSchema, "product");
+export const ProductModel = model<ProductDocument>(
+  "product",
+  productSchema,
+  "products"
+);
