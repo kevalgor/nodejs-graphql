@@ -1,22 +1,35 @@
 import { model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
+import { UserDocument } from "../../interface/model.interface";
 
-const userSchema = new Schema(
+const schemaTypes = Schema.Types;
+const userSchema = new Schema<UserDocument>(
   {
     name: {
-      type: String,
+      type: schemaTypes.String,
+      required: true,
     },
     email: {
-      type: String,
+      type: schemaTypes.String,
+      required: true,
     },
     mobile: {
-      type: String,
+      type: schemaTypes.String,
+      required: true,
+    },
+    address: {
+      type: schemaTypes.String,
+      required: true,
+    },
+    deliveryAddress: {
+      type: schemaTypes.String,
     },
     password: {
-      type: String,
+      type: schemaTypes.String,
+      required: true,
     },
     active: {
-      type: Boolean,
+      type: schemaTypes.Boolean,
       default: true,
       index: true,
     },
@@ -25,13 +38,11 @@ const userSchema = new Schema(
     timestamps: true,
     methods: {
       async comparePassword(password: string): Promise<Boolean> {
-        return bcrypt.compareSync(password, this.password);
+        return bcrypt.compareSync(password, String(this.password));
       },
     },
   }
 );
-
-userSchema.index({ "$**": "text" });
 
 // userSchema.methods = {
 //   /**
@@ -46,4 +57,6 @@ userSchema.index({ "$**": "text" });
 //   },
 // };
 
-export const UserModel = model("user", userSchema, "user");
+userSchema.index({ "$**": "text" });
+
+export const UserModel = model<UserDocument>("user", userSchema, "users");

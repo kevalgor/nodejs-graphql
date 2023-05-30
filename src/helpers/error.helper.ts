@@ -1,40 +1,47 @@
 import { ApolloServerErrorCode } from "@apollo/server/errors";
 import { GraphQLError } from "graphql";
+import { httpErrorConstants } from "../constants";
+import { IErrorTypes } from "../interface/error.interface";
 
-export const ErrorTypes = {
+const errorTypes: IErrorTypes = {
   BAD_REQUEST: {
     errorCode:
       ApolloServerErrorCode.BAD_REQUEST ||
       ApolloServerErrorCode.GRAPHQL_VALIDATION_FAILED,
-    errorStatus: 400,
+    errorStatus: httpErrorConstants.BAD_REQUEST,
   },
   UNAUTHORIZED: {
     errorCode: "UNAUTHORIZED",
-    errorStatus: 401,
+    errorStatus: httpErrorConstants.UNAUTHORIZED,
   },
   FORBIDDEN: {
     errorCode: "FORBIDDEN",
-    errorStatus: 403,
+    errorStatus: httpErrorConstants.FORBIDDEN,
   },
   NOT_FOUND: {
     errorCode: "NOT_FOUND",
-    errorStatus: 404,
+    errorStatus: httpErrorConstants.NOT_FOUND,
   },
   CONFLICT: {
     errorCode: "CONFLICT",
-    errorStatus: 409,
+    errorStatus: httpErrorConstants.CONFLICT,
   },
   INTERNAL_SERVER_ERROR: {
     errorCode: ApolloServerErrorCode.INTERNAL_SERVER_ERROR,
-    errorStatus: 500,
+    errorStatus: httpErrorConstants.INTERNAL_SERVER_ERROR,
   },
 };
 
-export const throwCustomError = (errorMessage: any, errorType: any) => {
+const throwCustomError = (errorMessage: any, errorType: any) => {
   throw new GraphQLError(errorMessage, {
     extensions: {
       code: errorType.errorCode,
       http: errorType.errorStatus,
     },
   });
+};
+
+export default {
+  errorTypes,
+  throwCustomError,
 };

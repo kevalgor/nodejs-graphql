@@ -11,6 +11,8 @@ const typeDefs = `#graphql
     name: String!
     email: String!
     mobile: String!
+    address: String
+    deliveryAddress: String
   }
 
   type Product {
@@ -18,15 +20,33 @@ const typeDefs = `#graphql
     title: String!
     description: String!
     image: String!
-    price: Int!
+    price: Float!
     category: String!
   }
 
-  type CartItem {
+  type Cart {
     _id: String
     product: Product!
     user: User!
     quantity: Int!
+  }
+
+  type Wishlist {
+    _id: String!
+    product: Product!
+    user: User!
+  }
+
+  type Order {
+    _id: String!
+    product: Product!
+    user: User!
+    quantity: Int!
+    orderStatus: Int!
+    orderAmount: Float!
+    discount: Float
+    paidAmount: Float!
+    deliveryAddress: String!
   }
 
   input RegisterInput {
@@ -41,43 +61,82 @@ const typeDefs = `#graphql
     password: String!
   }
 
-  input UserInput {
+  input UpdateUserInformationInput {
     name: String
-    email: String
     mobile: String
+    address: String
+    deliveryAddress: String
   }
 
-  input CartItemInput {
+  input AddProductToCartInput {
+    product: String!
+    user: String!
     quantity: Int!
+  }
+
+  input UpdateCartProductInput {
+    quantity: Int!
+  }
+
+  input AddProductToWishlistInput {
+    product: String!
+    user: String!
+  }
+
+  input CompleteOrderInput {
+    product: String!
+    user: String!
+    quantity: Int!,
+    orderAmount: Float!,
+    discount: Float,
+    paidAmount: Float!,
+    deliveryAddress: String!,
   }
 
   # Queries
 
   type Query {
     # user
-    getUserById(userId: String!): User!
+    getUser(userId: String!): User!
 
     # product
     getProducts: [Product!]!
+    getProduct(productId: String!): Product!
 
     # cart
-    getCartItems: [CartItem!]!
-    getCartItemById(cartItemId: String!): CartItem!
+    getCart: [Cart!]!
+    getCartProduct(cartId: String!): Cart!
+
+    # wishlist
+    getWishlist: [Wishlist!]!
+    getWishlistProduct(wishlistId: String!): Wishlist!
+
+    # order
+    getOrders: [Order!]!
+    getOrder(orderId: String!): Order!
   }
 
   # Mutations
 
   type Mutation {
     # auth
-    register(registerInput: RegisterInput!): Boolean
+    register(registerInput: RegisterInput!): Boolean!
     login(loginInput: LoginInput!): LoginResponse!
 
     # user
-    updateUserById(userId: String!, userInput: UserInput!): User!
+    updateUserInformation(userId: String!, updateUserInformationInput: UpdateUserInformationInput!): Boolean!
 
     # cart
-    updateCartItemById(cartItemId: String!, cartItemInput: CartItemInput!): CartItem!
-    deleteCartItemById(cartItemId: String!): Boolean
+    addProductToCart(addProductToCartInput: AddProductToCartInput!): Boolean!
+    updateCartProduct(cartId: String!, updateCartProductInput: UpdateCartProductInput!): Boolean!
+    deleteCartProduct(cartId: String!): Boolean!
+
+    # wishlist
+    addProductToWishlist(addProductToWishlistInput: AddProductToWishlistInput!): Boolean!
+    deleteWishlistProduct(wishlistId: String!): Boolean!
+
+    # order
+    completeOrder(orderId: String!, completeOrderInput: CompleteOrderInput!): Boolean!
   }
 `;
 
