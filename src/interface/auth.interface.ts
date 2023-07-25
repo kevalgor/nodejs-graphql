@@ -8,4 +8,5 @@ export interface IRegisterInput {
   email: string;
   mobile: string;
   password: string;
+  address: string;
 }

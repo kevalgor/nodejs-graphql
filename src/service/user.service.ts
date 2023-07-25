@@ -3,12 +3,13 @@ import { CommonService } from "../types/resolvers.types";
 import { UserDocument } from "../interface";
 import { UserModel } from "../db/models/user.model";
 import { httpErrorConstants, messageConstants } from "../constants";
-import { errorHelper } from "../helpers";
+import { authHelper, errorHelper } from "../helpers";
 
 const userService: CommonService<any, UserDocument | boolean> = {
   Query: {
-    getUser: async (_, args) => {
+    getUserInformation: async (_, args, context) => {
       try {
+        authHelper.checkAuth(context);
         const user: HydratedDocument<UserDocument> = await UserModel.findOne({
           _id: args.userId,
           active: true,
@@ -36,8 +37,9 @@ const userService: CommonService<any, UserDocument | boolean> = {
     },
   },
   Mutation: {
-    updateUserInformation: async (_, args) => {
+    updateUserInformation: async (_, args, context) => {
       try {
+        authHelper.checkAuth(context);
         const userExist: HydratedDocument<UserDocument> =
           await UserModel.findOne({
             _id: args.userId,
