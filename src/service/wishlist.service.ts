@@ -3,15 +3,16 @@ import { CommonService } from "../types/resolvers.types";
 import { WishlistDocument } from "../interface";
 import { WishlistModel } from "../db/models/wishlist.model";
 import { messageConstants, httpErrorConstants } from "../constants";
-import { errorHelper } from "../helpers";
+import { authHelper, errorHelper } from "../helpers";
 
 const wishlistService: CommonService<
   any,
   WishlistDocument | WishlistDocument[] | boolean
 > = {
   Query: {
-    getWishlist: async () => {
+    getWishlist: async (_, {}, context) => {
       try {
+        authHelper.checkAuth(context);
         const wishlist: HydratedDocument<WishlistDocument>[] =
           await WishlistModel.find().populate("product").populate("user");
         return wishlist;
@@ -29,8 +30,9 @@ const wishlistService: CommonService<
         );
       }
     },
-    getWishlistProduct: async (_, args) => {
+    getWishlistProduct: async (_, args, context) => {
       try {
+        authHelper.checkAuth(context);
         const wishlistProduct: HydratedDocument<WishlistDocument> =
           await WishlistModel.findOne({
             _id: args.wishlistId,
@@ -58,8 +60,9 @@ const wishlistService: CommonService<
     },
   },
   Mutation: {
-    addProductToWishlist: async (_, args) => {
+    addProductToWishlist: async (_, args, context) => {
       try {
+        authHelper.checkAuth(context);
         const addProductToWishlist: HydratedDocument<WishlistDocument> =
           new WishlistModel({
             product: args.addProductToWishlistInput.product,
@@ -81,8 +84,9 @@ const wishlistService: CommonService<
         );
       }
     },
-    deleteWishlistProduct: async (_, args) => {
+    deleteWishlistProduct: async (_, args, context) => {
       try {
+        authHelper.checkAuth(context);
         const wishlistProduct: HydratedDocument<WishlistDocument> =
           await WishlistModel.findOne({
             _id: args.wishlistId,

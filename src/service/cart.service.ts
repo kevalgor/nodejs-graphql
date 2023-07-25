@@ -31,8 +31,9 @@ const cartService: CommonService<any, CartDocument[] | CartDocument | boolean> =
           );
         }
       },
-      getCartProduct: async (_, args) => {
+      getCartProduct: async (_, args, context) => {
         try {
+          authHelper.checkAuth(context);
           const cartProduct: HydratedDocument<CartDocument> =
             await CartModel.findOne({
               _id: args.cartId,
@@ -60,8 +61,9 @@ const cartService: CommonService<any, CartDocument[] | CartDocument | boolean> =
       },
     },
     Mutation: {
-      addProductToCart: async (_, args) => {
+      addProductToCart: async (_, args, context) => {
         try {
+          authHelper.checkAuth(context);
           const addProductToCart: HydratedDocument<CartDocument> =
             new CartModel({
               product: args.addProductToCartInput.product,
@@ -84,8 +86,9 @@ const cartService: CommonService<any, CartDocument[] | CartDocument | boolean> =
           );
         }
       },
-      updateCartProduct: async (_, args) => {
+      updateCartProduct: async (_, args, context) => {
         try {
+          authHelper.checkAuth(context);
           const cartProduct: HydratedDocument<CartDocument> =
             await CartModel.findOne({
               _id: args.cartId,
@@ -114,8 +117,9 @@ const cartService: CommonService<any, CartDocument[] | CartDocument | boolean> =
           );
         }
       },
-      deleteCartProduct: async (_, args) => {
+      deleteCartProduct: async (_, args, context) => {
         try {
+          authHelper.checkAuth(context);
           const cartProduct: HydratedDocument<CartDocument> =
             await CartModel.findOne({
               _id: args.cartId,

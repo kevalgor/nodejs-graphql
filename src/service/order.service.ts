@@ -3,15 +3,16 @@ import { CommonService } from "../types/resolvers.types";
 import { OrderModel } from "../db/models/order.model";
 import { OrderDocument } from "../interface";
 import { messageConstants, httpErrorConstants, OrderEnum } from "../constants";
-import { errorHelper } from "../helpers";
+import { authHelper, errorHelper } from "../helpers";
 
 const orderService: CommonService<
   any,
   OrderDocument | OrderDocument[] | boolean
 > = {
   Query: {
-    getOrders: async () => {
+    getOrders: async (_, {}, context) => {
       try {
+        authHelper.checkAuth(context);
         const orders: HydratedDocument<OrderDocument>[] =
           await OrderModel.find().populate("product").populate("user");
         return orders;
@@ -29,13 +30,16 @@ const orderService: CommonService<
         );
       }
     },
-    getOrder: async (_, args) => {
+    getOrder: async (_, args, context) => {
       try {
+        authHelper.checkAuth(context);
         const order: HydratedDocument<OrderDocument> = await OrderModel.findOne(
           {
             _id: args.orderId,
           }
-        );
+        )
+          .populate("product")
+          .populate("user");
         if (!order) {
           errorHelper.throwCustomError(
             messageConstants.ORDER_NOT_FOUND,
@@ -59,8 +63,9 @@ const orderService: CommonService<
     },
   },
   Mutation: {
-    completeOrder: async (_, args) => {
+    completeOrder: async (_, args, context) => {
       try {
+        authHelper.checkAuth(context);
         const completeOrder: HydratedDocument<OrderDocument> = new OrderModel({
           product: args.completeOrderInput.product,
           user: args.completeOrderInput.user,

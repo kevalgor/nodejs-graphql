@@ -13,7 +13,7 @@ const server = new ApolloServer({
 });
 
 set("strictQuery", true);
-connect("mongodb://localhost:27017/eCommerceDemo")
+connect("mongodb://127.0.0.1:27017/e-commerce")
   .then(async () => {
     console.log(
       "\n-------------------------- database connected --------------------------\n"
@@ -22,8 +22,8 @@ connect("mongodb://localhost:27017/eCommerceDemo")
       listen: {
         port: 5200,
       },
-      context: async ({ req, res }) => {
-        let user = null;
+      context: async ({ req, res }: any) => {
+        let user = {};
         // Get the user token from the headers.
         const token = req.headers.authorization
           ? req.headers.authorization.replace("Bearer ", "")
@@ -40,6 +40,8 @@ connect("mongodb://localhost:27017/eCommerceDemo")
               errorHelper.errorTypes.UNAUTHORIZED
             );
           }
+        } else {
+          return user;
         }
       },
     });
@@ -51,14 +53,14 @@ connect("mongodb://localhost:27017/eCommerceDemo")
         "------------------------------------------------------------------------"
     );
   })
-  .catch((err) =>
+  .catch((err: Error) =>
     console.log(
       "\n-------------------------- error --------------------------\n",
       err
     )
   );
 // to catch error after mongoose initialization
-connection.on("error", (err) => {
+connection.on("error", (err: Error) => {
   console.log(
     "\n-------------------------- error --------------------------\n",
     err

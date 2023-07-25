@@ -32,7 +32,7 @@ const errorTypes: IErrorTypes = {
   },
 };
 
-const throwCustomError = (errorMessage: any, errorType: any) => {
+const throwCustomError = (errorMessage: string, errorType: any) => {
   throw new GraphQLError(errorMessage, {
     extensions: {
       code: errorType.errorCode,

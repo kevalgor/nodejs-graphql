@@ -1,8 +1,11 @@
 const typeDefs = `#graphql
   type LoginResponse {
     _id: String!
+    name: String!
     email: String!
     mobile: String!
+    address: String!
+    deliveryAddress: String!
     token: String!
   }
 
@@ -54,6 +57,7 @@ const typeDefs = `#graphql
     email: String!
     mobile: String!
     password: String!
+    address: String!
   }
 
   input LoginInput {
@@ -97,7 +101,7 @@ const typeDefs = `#graphql
 
   type Query {
     # user
-    getUser(userId: String!): User!
+    getUserInformation(userId: String!): User!
 
     # product
     getProducts: [Product!]!
@@ -136,7 +140,7 @@ const typeDefs = `#graphql
     deleteWishlistProduct(wishlistId: String!): Boolean!
 
     # order
-    completeOrder(orderId: String!, completeOrderInput: CompleteOrderInput!): Boolean!
+    completeOrder(completeOrderInput: CompleteOrderInput!): Boolean!
   }
 `;
 

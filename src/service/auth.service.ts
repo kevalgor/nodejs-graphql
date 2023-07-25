@@ -29,6 +29,7 @@ const authService: CommonService<any, UserDocument | boolean> = {
           email: args.registerInput.email.toLowerCase(),
           mobile: args.registerInput.mobile,
           password: hashedPassword,
+          address: args.registerInput.address,
         };
         await UserModel.create(user);
         return true;
